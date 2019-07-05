@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
-import { getRandomIntInclusive } from './utilities';
-import './Worker.scss';
+import { getRandomIntInclusive } from '../utilities';
+import '../styles/Worker.scss';
 
 class Worker extends Component {
   constructor(props) {

@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { shuffle } from './utilities';
+import { shuffle } from '../utilities';
 import Worker from './Worker';
 
 class WorkerSection extends Component {
