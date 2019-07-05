@@ -31,4 +31,6 @@ class WorkerSection extends Component {
   }
 }
 
-export default connect(state => ({ workers: getWorkers(state) }))(WorkerSection);
+export default connect((state) => {
+  return { workers: getWorkers(state) }
+})(WorkerSection);
