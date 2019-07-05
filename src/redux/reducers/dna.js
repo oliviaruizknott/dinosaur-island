@@ -1,4 +1,4 @@
-import { BASIC, ADVANCED, ROUND, SQUARE } from '../../constants';
+import { B1, B2, B3, A1, A2, A3, BASIC, ADVANCED, ROUND, SQUARE } from '../../constants';
 
 // This looks something like:
 // dna: {
@@ -20,12 +20,12 @@ export default function(state = initialState, action) {
 // Helpful Functions -----------------------------------------------------------
 function generateStartingDna() {
   const dnaStarters = {
-    "B1": "#5ABDD5",
-    "B2": "#B465A5",
-    "B3": "#5970B6",
-    "A1": "#7CC040",
-    "A2": "#E9248B",
-    "A3": "#F7CD12"
+    [B1]: "#5ABDD5",
+    [B2]: "#B465A5",
+    [B3]: "#5970B6",
+    [A1]: "#7CC040",
+    [A2]: "#E9248B",
+    [A3]: "#F7CD12"
   }
 
   let startingDna = {}
