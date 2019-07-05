@@ -1,4 +1,6 @@
 import React, { Component } from 'react';
+import { connect } from "react-redux";
+import { getWorkers } from '../redux/selectors/WorkerSectionSelector';
 import Worker from './Worker';
 
 class WorkerSection extends Component {
@@ -8,13 +10,13 @@ class WorkerSection extends Component {
   }
 
   workerComponents() {
-    return this.generateWorkers().map((worker, i) => {
+    return Object.keys(this.props.workers).map((key, index) => {
       return (
         <Worker
-          key={i}
-          id={i}
-          icon={worker.icon}
-          name={worker.name}
+          key={index}
+          id={key}
+          icon={this.props.workers[key].icon}
+          title={this.props.workers[key].title}
         />
       )
     });
@@ -23,10 +25,10 @@ class WorkerSection extends Component {
   render() {
     return (
       <div className="WorkerSection">
-        Workers will go here.
+        {this.workerComponents()}
       </div>
     )
   }
 }
 
-export default WorkerSection;
+export default connect(state => ({ workers: getWorkers(state) }))(WorkerSection);

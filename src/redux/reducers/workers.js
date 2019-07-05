@@ -20,7 +20,7 @@ export default function(state = initialState, action) {
   return state;
 }
 
-// Functions
+// Helpful Functions -----------------------------------------------------------
 
 function generateStartingWorkers() {
   // Make an array of 3 scientists with random emoji and associated starting data

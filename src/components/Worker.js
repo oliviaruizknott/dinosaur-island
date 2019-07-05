@@ -20,7 +20,7 @@ class Worker extends Component {
       <div className="Worker">
         <div className="workerIcon">{this.props.icon}</div>
         <div className="workerInfo">
-          <p>{this.props.name}</p>
+          <p>{this.props.title}</p>
           {this.taskBar()}
         </div>
       </div>
