@@ -1,3 +1,4 @@
 import { combineReducers } from "redux";
+import workers from "./workers";
 
-// export default combineReducers({ todos, visibilityFilter });
+export default combineReducers({ workers });
