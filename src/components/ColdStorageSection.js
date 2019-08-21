@@ -10,9 +10,9 @@ class ColdStorageSection extends Component {
         <ColdStorageBin
           key={index}
           id={key}
-          type={this.props.dna[key].type}
-          color={this.props.dna[key].color}
-          shape={this.props.dna[key].shape}
+          type={this.props.dna[key].metadata.type}
+          color={this.props.dna[key].metadata.color}
+          shape={this.props.dna[key].metadata.shape}
           stored={this.props.dna[key].stored}
           limit={this.props.dna[key].limit}
         />
