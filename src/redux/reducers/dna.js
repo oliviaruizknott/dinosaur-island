@@ -34,9 +34,11 @@ function generateStartingDna() {
     let basic = key[0] === "B";
 
     startingDna[key] = {
-      type: basic ? BASIC : ADVANCED,
-      color: dnaStarters[key],
-      shape: basic ? ROUND : SQUARE,
+      metadata : {
+        type: basic ? BASIC : ADVANCED,
+        color: dnaStarters[key],
+        shape: basic ? ROUND : SQUARE
+      },
       stored: 0,
       limit: basic ? 3 : 1
     }
