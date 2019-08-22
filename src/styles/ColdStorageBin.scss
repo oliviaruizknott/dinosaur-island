@@ -2,21 +2,6 @@
   display: flex;
   align-items: center;
 
-  .dnaName {
-    height: 30px;
-    width: 30px;
-    margin: 5px;
-    color: white;
-
-    display: flex;
-    align-items: center;
-    justify-content: center;
-
-    &.round {
-      border-radius: 100%;
-    }
-  }
-
   .amounts {
     margin: 5px;
   }
