@@ -14,7 +14,6 @@ class ColdStorageBin extends Component {
   }
 
   render() {
-    let style = { "backgroundColor": this.props.color }
     return (
       <div className="ColdStorageBin">
         <Dna type={this.props.id} />

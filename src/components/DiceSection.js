@@ -11,6 +11,7 @@ class DiceSection extends Component {
       const dieComponent = (
         <Die
           key={index}
+          id={index}
           dieData={die}
         />
       )
