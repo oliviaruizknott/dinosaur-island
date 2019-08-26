@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import Dna from './Dna';
 import '../styles/ColdStorageBin.scss';
 
 class ColdStorageBin extends Component {
@@ -13,10 +14,9 @@ class ColdStorageBin extends Component {
   }
 
   render() {
-    let style = { "backgroundColor": this.props.color }
     return (
       <div className="ColdStorageBin">
-        <div className={`dnaName ${this.props.shape}`} style={style}>{this.props.id}</div>
+        <Dna type={this.props.id} />
         <p className="amounts">{this.props.stored} / {this.props.limit}</p>
         <button id={this.props.id} onClick={this.handleClick}>+</button>
       </div>
