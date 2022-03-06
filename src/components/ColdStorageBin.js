@@ -1,27 +1,34 @@
-import React, { Component } from 'react';
+import React from 'react';
+import { useSelector, useDispatch } from 'react-redux'
+
+import {selectDnaById, increaseLimit, increaseDnaStored } from '../redux/reducers/dnaSlice'
 import Dna from './Dna';
 import '../styles/ColdStorageBin.scss';
 
-class ColdStorageBin extends Component {
-  constructor(props) {
-    super(props);
+const ColdStorageBin = ({ id }) => {
+  const { stored, limit } = useSelector(state => selectDnaById(state, id))
+  const dispatch = useDispatch()
 
-    this.handleClick = this.handleClick.bind(this);
+  const handleIncreaseStoredClick = (e) => {
+    dispatch(increaseDnaStored(e.target.id, 1))
   }
 
-  handleClick(e) {
-    console.log(`We’ll increase cold storage for ${e.target.id}`)
+  const handleIncreaseLimitClick = (e) => {
+    dispatch(increaseLimit(e.target.id, 1))
   }
 
-  render() {
-    return (
-      <div className="ColdStorageBin">
-        <Dna type={this.props.id} />
-        <p className="amounts">{this.props.stored} / {this.props.limit}</p>
-        <button id={this.props.id} onClick={this.handleClick}>+</button>
-      </div>
-    )
-  }
+  return (
+    <div className="ColdStorageBin">
+      <Dna type={id} />
+      <p className="amounts">
+        <span>{stored}</span>
+        <button id={id} onClick={handleIncreaseStoredClick}>+</button>
+        /
+        <span>{limit}</span>
+        <button id={id} onClick={handleIncreaseLimitClick}>+</button>
+      </p>
+    </div>
+  )
 }
 
 export default ColdStorageBin;

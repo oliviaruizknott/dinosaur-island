@@ -1,14 +1,14 @@
 import React from 'react';
 import '../styles/App.scss';
 
-import LabBoard from './LabBoard';
+import Lab from './Lab';
 
 function App() {
   return (
     <div className="App">
-      <LabBoard />
+      <Lab />
     </div>
-  );
+  )
 }
 
-export default App;
+export default App
