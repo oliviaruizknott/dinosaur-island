@@ -5,13 +5,16 @@ import { messagePosted } from '../messages/messagesSlice'
 
 // This looks something like:
 // dna: {
-//   "B1": {
-//     type: BASIC,
-//     color: "#5ABDD5",
-//     shape: ROUND
+//   B1: {
+//     id: 'B1',
+//     metadata: {
+//       type: 'basic',
+//       color: '#5ABDD5',
+//       shape: 'round'
+//     },
 //     stored: 0,
 //     limit: 3
-//   }
+//   },
 //   ...
 // }
 const initialState = generateStartingDna();
