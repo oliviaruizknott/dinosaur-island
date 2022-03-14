@@ -1,6 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit'
 
 import { B1, B2, B3, A1, A2, A3, BASIC, ADVANCED, ROUND, SQUARE } from '../../constants';
+import { messagePosted } from '../messages/messagesSlice'
 
 // This looks something like:
 // dna: {
@@ -83,10 +84,13 @@ export const selectDnaById = (store, dnaId) => store.dna[dnaId]
 
 // Thunks ----------------------------------------------------------------------
 
-export const increaseDnaStored = (dnaType, amount) => (dispatch, getState) => {
-  if (getState().dna[dnaType].stored + amount <= getState().dna[dnaType].limit) {
+export const tryStoredIncrease = (dnaType, amount) => (dispatch, getState) => {
+  let dna = getState().dna
+  if (dna[dnaType].stored + amount <= dna[dnaType].limit) {
     dispatch(storedIncreased(dnaType, amount))
   } else {
-    console.log("You cannot increase stored DNA beyond the limit. Increase your storage limit instead.")
+    dispatch(messagePosted(
+      `You cannot increase stored ${dnaType} DNA beyond its current limit of ${dna[dnaType].limit}. Increase your storage limit instead.`
+    ))
   }
 }
