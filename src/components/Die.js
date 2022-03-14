@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import Dna from './Dna';
+import Dna from '../features/dna/Dna';
 import '../styles/Die.scss';
 import { shuffle } from '../utilities';
 

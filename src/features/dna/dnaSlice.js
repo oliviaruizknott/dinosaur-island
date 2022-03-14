@@ -22,7 +22,7 @@ const dnaSlice = createSlice({
     reset(state, action) {
       return initialState
     },
-    increaseLimit: {
+    limitIncreased: {
       reducer(state, action) {
         state[action.payload.dnaType].limit += action.payload.amount
       },
@@ -30,7 +30,7 @@ const dnaSlice = createSlice({
         return { payload: { dnaType, amount }}
       }
     },
-    increaseStored: {
+    storedIncreased: {
       reducer(state, action) {
         state[action.payload.dnaType].stored += action.payload.amount
       },
@@ -41,7 +41,7 @@ const dnaSlice = createSlice({
   }
 })
 
-export const { reset, increaseLimit, increaseStored } = dnaSlice.actions
+export const { reset, limitIncreased, storedIncreased } = dnaSlice.actions
 export default dnaSlice.reducer
 
 // Helpful Functions -----------------------------------------------------------
@@ -85,7 +85,7 @@ export const selectDnaById = (store, dnaId) => store.dna[dnaId]
 
 export const increaseDnaStored = (dnaType, amount) => (dispatch, getState) => {
   if (getState().dna[dnaType].stored + amount <= getState().dna[dnaType].limit) {
-    dispatch(increaseStored(dnaType, amount))
+    dispatch(storedIncreased(dnaType, amount))
   } else {
     console.log("You cannot increase stored DNA beyond the limit. Increase your storage limit instead.")
   }

@@ -1,7 +1,7 @@
 import React from 'react';
 import { useSelector, useDispatch, shallowEqual } from "react-redux";
 
-import { reset, selectDnaIds } from '../redux/reducers/dnaSlice';
+import { reset, selectDnaIds } from './dnaSlice';
 import ColdStorageBin from './ColdStorageBin';
 
 const ColdStorage = () => {

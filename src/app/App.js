@@ -1,7 +1,7 @@
 import React from 'react';
 import '../styles/App.scss';
 
-import Lab from './Lab';
+import Lab from '../components/Lab';
 
 function App() {
   return (

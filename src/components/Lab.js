@@ -1,6 +1,6 @@
 import React from 'react';
 import WorkerSection from './WorkerSection';
-import ColdStorage from './ColdStorage';
+import ColdStorage from '../features/dna/ColdStorage';
 import DiceSection from './DiceSection';
 
 const Lab = () => {

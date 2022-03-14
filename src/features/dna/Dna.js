@@ -1,5 +1,5 @@
 import React from 'react';
-import '../styles/Dna.scss';
+import './Dna.scss';
 
 const Dna = (props) => {
   return (
