@@ -1,6 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit'
 
-import { generateStartingDna } from './dnaUtilities'
+import { initializeDna } from './dnaUtilities'
 import { messagePosted } from '../messages/messagesSlice'
 
 // This looks something like:
@@ -24,7 +24,7 @@ import { messagePosted } from '../messages/messagesSlice'
 //     ...
 //   ]
 // }
-const initialState = generateStartingDna();
+const initialState = initializeDna();
 
 const dnaSlice = createSlice({
   name: 'dna',

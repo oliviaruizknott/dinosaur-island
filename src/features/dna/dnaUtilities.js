@@ -111,70 +111,53 @@ const availableDnaCount = 5
 
 // these are set at game initiation and will not change
 export var availableDnaDiceIndices
+export var allPossibleDna
+export var startingAvailableDna
 
-function generateStartingAvailableDna() {
+export function initializeDna() {
+  setAvailableDnaDice()
+  makeAllPossilbleDna()
+  setStartingAvailableDna()
+
+  return getInitialDnaState()
+}
+
+function setAvailableDnaDice() {
   availableDnaDiceIndices = shuffle([...Array(ALL_DICE_DATA.length).keys()]).slice(0, availableDnaCount)
+}
 
-  return availableDnaDiceIndices.map((die) => {
-    return rollDnaDie(die)
+function makeAllPossilbleDna() {
+  allPossibleDna = availableDnaDiceIndices.map((dieIndex) => {
+    return ALL_DICE_DATA[dieIndex].map((sideData) => {
+      return {
+        count: sideData[0],
+        dnaType: sideData[1],
+        threat: sideData[2],
+        researched: false,
+      }
+    })
   })
 }
 
-function rollDnaDie(dieIndex) {
-  const dieData = ALL_DICE_DATA[dieIndex]
-  const sideData = shuffle(dieData).pop()
+function setStartingAvailableDna() {
+  startingAvailableDna = allPossibleDna.map((dnaDie) => {
+    return shuffle(dnaDie)[0]
+  })
+}
+
+function getInitialDnaState() {
   return {
-    count: sideData[0],
-    dnaType: sideData[1],
-    threat: sideData[2],
-    researched: false,
+    storage: generateStartingStorageDna(),
+    available: startingAvailableDna
   }
 }
 
-export function generateDnaDice(diceCount) {
-  const allDice = makeAllDice();
-  const gameDice = selectGameDice(diceCount, allDice);
-  return gameDice;
-}
-
-function makeAllDice() {
-  const allDice = [];
-  for (let diceData of ALL_DICE_DATA) {
-    const die = [];
-    for (let diceSide of diceData) {
-      const diceSideObject = {
-        dnaCount: diceSide[0],
-        dnaType: diceSide[1],
-        threat: diceSide[2]
-      }
-      die.push(diceSideObject);
-    }
-    allDice.push(die);
-  }
-  return allDice;
-}
-
-function selectGameDice(diceCount, allDice) {
-  const gameDice = [];
-  for (let i = 0; i < diceCount; i++) {
-    gameDice.push(shuffle(allDice).pop())
-  }
-  return gameDice;
-}
-
-export function generateStartingDna() {
-  const dnaStarters = {
-    [B1]: '#5ABDD5',
-    [B2]: '#B465A5',
-    [B3]: '#5970B6',
-    [A1]: '#7CC040',
-    [A2]: '#E9248B',
-    [A3]: '#F7CD12'
-  }
+export function generateStartingStorageDna() {
+  const dnaStarters = [ B1, B2, B3, A1, A2, A3 ]
 
   let startingStorageDna = {}
 
-  Object.keys(dnaStarters).forEach((key) => {
+  dnaStarters.forEach((key) => {
     let basic = key[0] === 'B';
 
     startingStorageDna[key] = {
@@ -185,8 +168,5 @@ export function generateStartingDna() {
     }
   });
 
-  return {
-    storage: startingStorageDna,
-    available: generateStartingAvailableDna()
-  }
+  return startingStorageDna
 }
