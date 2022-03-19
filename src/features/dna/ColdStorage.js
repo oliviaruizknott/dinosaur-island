@@ -1,11 +1,11 @@
 import React from 'react'
 import { useSelector, useDispatch, shallowEqual } from 'react-redux'
 
-import { reset, selectDnaIds } from './dnaSlice'
+import { reset, selectStoredDnaIds } from './dnaSlice'
 import ColdStorageBin from './ColdStorageBin'
 
 const ColdStorage = () => {
-  const dnaIds = useSelector(selectDnaIds, shallowEqual)
+  const dnaIds = useSelector(selectStoredDnaIds, shallowEqual)
   const dispatch = useDispatch()
 
   const handleResetClick = (e) => {

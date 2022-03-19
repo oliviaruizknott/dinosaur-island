@@ -1,12 +1,12 @@
 import React from 'react';
 import { useSelector, useDispatch } from 'react-redux'
 
-import { selectDnaById, limitIncreased, tryStoredIncrease } from './dnaSlice'
+import { selectStoredDnaById, limitIncreased, tryStoredIncrease } from './dnaSlice'
 import Dna from './Dna';
 import './ColdStorageBin.scss';
 
 const ColdStorageBin = ({ id }) => {
-  const { stored, limit } = useSelector(state => selectDnaById(state, id))
+  const { stored, limit } = useSelector(state => selectStoredDnaById(state, id))
   const dispatch = useDispatch()
 
   const handleIncreaseStoredClick = (e) => {
