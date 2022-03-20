@@ -1,13 +1,18 @@
 import React from 'react'
-import { useSelector, shallowEqual } from "react-redux"
+import { useSelector, useDispatch, shallowEqual } from "react-redux"
 
-import { selectAvailableDna } from './dnaSlice'
+import { refreshAvailable, selectAvailableDna } from './dnaSlice'
 import AvailableDna from './AvailableDna'
 
 const AvailableDnaSection = () => {
   const availableDna = useSelector(selectAvailableDna, shallowEqual)
+  const dispatch = useDispatch()
 
-  const renderDice = () => {
+  const handleRefreshClick = (e) => {
+    dispatch(refreshAvailable())
+  }
+
+  const renderAvailableDna = () => {
     let dice = [];
     for (let i = 0; i < availableDna.length; i++) {
       dice.push(
@@ -22,7 +27,8 @@ const AvailableDnaSection = () => {
 
   return (
     <div className="AvailableDnaSection">
-      {renderDice()}
+      {renderAvailableDna()}
+      <button onClick={handleRefreshClick}>refresh available DNA</button>
     </div>
   )
 }

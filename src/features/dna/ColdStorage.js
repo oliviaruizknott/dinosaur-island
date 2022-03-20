@@ -1,7 +1,7 @@
 import React from 'react'
 import { useSelector, useDispatch, shallowEqual } from 'react-redux'
 
-import { reset, selectStoredDnaIds } from './dnaSlice'
+import { storageReset, selectStoredDnaIds } from './dnaSlice'
 import ColdStorageBin from './ColdStorageBin'
 
 const ColdStorage = () => {
@@ -9,7 +9,7 @@ const ColdStorage = () => {
   const dispatch = useDispatch()
 
   const handleResetClick = (e) => {
-    dispatch(reset())
+    dispatch(storageReset())
   }
 
   const renderBins = () => {
@@ -26,7 +26,7 @@ const ColdStorage = () => {
   return (
     <div className="ColdStorage">
       {renderBins()}
-      <button onClick={handleResetClick}>reset DNA</button>
+      <button onClick={handleResetClick}>reset DNA storage</button>
     </div>
   )
 }

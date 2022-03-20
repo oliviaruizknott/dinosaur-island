@@ -15,7 +15,7 @@ export const AW = 'AW'; // basic wild
 export const UP = 'UP'; // this stands for 'upgrade paddock'
 export const GW = 'GW'; // this stands for 'gain worker'
 
-// The data for each die face is written in the format: [count, type, threat]
+// The data for each die face is written in the format: [amount, type, threat]
 export const ALL_DICE_DATA = [
   [
     [3, B2, 2],
@@ -110,13 +110,15 @@ export const ALL_DICE_DATA = [
 const availableDnaCount = 5
 
 // these are set at game initiation and will not change
-export var availableDnaDiceIndices
-export var allPossibleDna
-export var startingAvailableDna
+let availableDnaDiceIndices
+let allPossibleAvailableDna
+export var startingStorageDna
+let startingAvailableDna
 
 export function initializeDna() {
   setAvailableDnaDice()
   makeAllPossilbleDna()
+  setStartingStorageDna()
   setStartingAvailableDna()
 
   return getInitialDnaState()
@@ -127,10 +129,10 @@ function setAvailableDnaDice() {
 }
 
 function makeAllPossilbleDna() {
-  allPossibleDna = availableDnaDiceIndices.map((dieIndex) => {
+  allPossibleAvailableDna = availableDnaDiceIndices.map((dieIndex) => {
     return ALL_DICE_DATA[dieIndex].map((sideData) => {
       return {
-        count: sideData[0],
+        amount: sideData[0],
         dnaType: sideData[1],
         threat: sideData[2],
         researched: false,
@@ -139,16 +141,18 @@ function makeAllPossilbleDna() {
   })
 }
 
+function setStartingStorageDna() {
+  startingStorageDna = generateStartingStorageDna()
+}
+
 function setStartingAvailableDna() {
-  startingAvailableDna = allPossibleDna.map((dnaDie) => {
-    return shuffle(dnaDie)[0]
-  })
+  startingAvailableDna = rollAllAvailableDna()
 }
 
 function getInitialDnaState() {
   return {
-    storage: generateStartingStorageDna(),
-    available: startingAvailableDna
+    storage: startingStorageDna,
+    available: startingAvailableDna,
   }
 }
 
@@ -169,4 +173,14 @@ export function generateStartingStorageDna() {
   });
 
   return startingStorageDna
+}
+
+export function rollAllAvailableDna() {
+  return allPossibleAvailableDna.map((dnaDie) => {
+    return shuffle(dnaDie)[0]
+  })
+}
+
+export function rollAvailableDnaAtIndex(index) {
+  return shuffle(allPossibleAvailableDna[index])[0]
 }

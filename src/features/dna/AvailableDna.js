@@ -1,20 +1,33 @@
-import React from 'react'
-import { useSelector } from 'react-redux'
-import Dna from './Dna'
-import './AvailableDna.scss';
+import React, { useState } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
 
-import { selectAvailableDnaByIndex } from './dnaSlice'
+import Dna from './Dna'
+import './AvailableDna.scss'
+
+import { selectAvailableDnaByIndex, dnaResearched } from './dnaSlice'
+import { BW, AW, UP, GW } from './dnaUtilities'
 
 const AvailableDna = ({ index }) => {
+  const dispatch = useDispatch()
   const {
-    count,
+    amount,
     dnaType,
-    threat,
+    researched,
   } = useSelector(state => selectAvailableDnaByIndex(state, index))
+
+  const handleResearchClick = (e) => {
+    dispatch(dnaResearched(index))
+  }
+
+  const checkDisabled = () => {
+    if ([BW, AW, UP, GW].includes(dnaType)) return true
+
+    return researched
+  }
 
   const renderDnaType = () => {
     let dnas = [];
-    for (let i = 0; i < count; i++) {
+    for (let i = 0; i < amount; i++) {
       const dna = <Dna key={i} type={dnaType} />;
       dnas.push(dna);
     }
@@ -26,7 +39,7 @@ const AvailableDna = ({ index }) => {
       <div className="dnaCount">
         {renderDnaType()}
       </div>
-      <div className="threat">{threat}</div>
+      <button onClick={handleResearchClick} disabled={checkDisabled()}>research</button>
     </div>
   )
 }
