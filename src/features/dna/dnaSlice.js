@@ -1,99 +1,111 @@
 import { createSlice } from '@reduxjs/toolkit'
 
-import { B1, B2, B3, A1, A2, A3, BASIC, ADVANCED, ROUND, SQUARE } from '../../constants';
+import {
+  initializeDna,
+  startingStorageDna,
+  rollAllAvailableDna,
+  rollAvailableDnaAtIndex
+} from './dnaUtilities'
 import { messagePosted } from '../messages/messagesSlice'
 
 // This looks something like:
 // dna: {
-//   B1: {
-//     id: 'B1',
-//     metadata: {
-//       type: 'basic',
-//       color: '#5ABDD5',
-//       shape: 'round'
+//   storage: {
+//     B1: {
+//       id: 'B1',
+//       level: 'basic',
+//       stored: 0,
+//       limit: 3
 //     },
-//     stored: 0,
-//     limit: 3
+//     ...
 //   },
-//   ...
+//   available: [
+//     {
+//       amount: 1,
+//       dnaType: 'AW',
+//       threat: 0,
+//       researched: false
+//     },
+//     ...
+//   ]
 // }
-const initialState = generateStartingDna();
+const initialState = initializeDna();
 
 const dnaSlice = createSlice({
   name: 'dna',
   initialState,
   reducers: {
-    reset(state, action) {
-      return initialState
+    storageReset(state, action) {
+      state.storage = startingStorageDna
     },
     limitIncreased: {
       reducer(state, action) {
-        state[action.payload.dnaType].limit += action.payload.amount
+        state.storage[action.payload.dnaType].limit += action.payload.amount
       },
       prepare(dnaType, amount) {
         return { payload: { dnaType, amount }}
       }
     },
-    storedIncreased: {
+    availableRefreshed: {
       reducer(state, action) {
-        state[action.payload.dnaType].stored += action.payload.amount
+        state.available = action.payload
       },
-      prepare(dnaType, amount) {
-        return { payload: { dnaType, amount }}
+      prepare(newDna) {
+        return { payload: newDna }
+      }
+    },
+    availableRefreshedAtIndex: {
+      reducer(state, action) {
+        state.available[action.payload.index] = action.payload.newDna
+      },
+      prepare(index, newDna) {
+        return { payload: { index, newDna} }
+      }
+    },
+    researched: {
+      reducer(state, action) {
+        state.storage[action.payload.dnaType].stored += action.payload.amount
+        state.available[action.payload.index].researched = true
+      },
+      prepare(dnaType, amount, index) {
+        return { payload: { dnaType, amount, index } }
       }
     }
   }
 })
 
-export const { reset, limitIncreased, storedIncreased } = dnaSlice.actions
+export const { storageReset, limitIncreased, availableRefreshed, availableRefreshedAtIndex, researched } = dnaSlice.actions
 export default dnaSlice.reducer
-
-// Helpful Functions -----------------------------------------------------------
-function generateStartingDna() {
-  const dnaStarters = {
-    [B1]: "#5ABDD5",
-    [B2]: "#B465A5",
-    [B3]: "#5970B6",
-    [A1]: "#7CC040",
-    [A2]: "#E9248B",
-    [A3]: "#F7CD12"
-  }
-
-  let startingDna = {}
-
-  Object.keys(dnaStarters).forEach((key) => {
-    let basic = key[0] === "B";
-
-    startingDna[key] = {
-      id: key,
-      metadata : {
-        type: basic ? BASIC : ADVANCED,
-        color: dnaStarters[key],
-        shape: basic ? ROUND : SQUARE
-      },
-      stored: 0,
-      limit: basic ? 3 : 1
-    }
-  });
-
-  return startingDna;
-}
 
 // Selectors -------------------------------------------------------------------
 
 export const selectDna = store => store.dna
-export const selectDnaIds = store => Object.keys(store.dna)
-export const selectDnaById = (store, dnaId) => store.dna[dnaId]
+export const selectAvailableDna = store => store.dna.available
+export const selectAvailableDnaByIndex = (store, index) => store.dna.available[index]
+export const selectStoredDnaIds = store => Object.keys(store.dna.storage)
+export const selectStoredDnaById = (store, dnaId) => store.dna.storage[dnaId]
 
 // Thunks ----------------------------------------------------------------------
 
-export const tryStoredIncrease = (dnaType, amount) => (dispatch, getState) => {
-  let dna = getState().dna
-  if (dna[dnaType].stored + amount <= dna[dnaType].limit) {
-    dispatch(storedIncreased(dnaType, amount))
+export const dnaResearched = (index) => (dispatch, getState) => {
+  const { dnaType, amount } = getState().dna.available[index]
+  const dnaStorage = getState().dna.storage
+  if (dnaStorage[dnaType].stored + amount <= dnaStorage[dnaType].limit) {
+    // dispatch(storedIncreased(dnaType, amount))
+    dispatch(researched(dnaType, amount, index))
   } else {
     dispatch(messagePosted(
-      `You cannot increase stored ${dnaType} DNA beyond its current limit of ${dna[dnaType].limit}. Increase your storage limit instead.`
+      `You cannot increase stored ${dnaType} DNA beyond its current limit of ${dnaStorage[dnaType].limit}. Increase your storage limit instead.`
     ))
   }
+}
+
+export const refreshAvailable = () => (dispatch, getState) => {
+  const newDna = rollAllAvailableDna()
+  dispatch(availableRefreshed(newDna))
+}
+
+export const refreshAvailableAtIndex = (index) => (dispatch, getState) => {
+  const newDna = rollAvailableDnaAtIndex(index)
+  dispatch(availableRefreshedAtIndex(index, newDna))
 }
